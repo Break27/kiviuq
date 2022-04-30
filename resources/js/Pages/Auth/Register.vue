@@ -1,6 +1,6 @@
 <script setup>
 import BreezeButton from '@/Components/Button.vue';
-import BreezeGuestLayout from '@/Layouts/Guest.vue';
+import AuthLayout from '@/Layouts/Authenication.vue';
 import BreezeInput from '@/Components/Input.vue';
 import BreezeLabel from '@/Components/Label.vue';
 import BreezeValidationErrors from '@/Components/ValidationErrors.vue';
@@ -22,7 +22,7 @@ const submit = () => {
 </script>
 
 <template>
-    <BreezeGuestLayout>
+    <auth-layout>
         <Head title="Register" />
 
         <BreezeValidationErrors class="mb-4" />
@@ -58,5 +58,5 @@ const submit = () => {
                 </BreezeButton>
             </div>
         </form>
-    </BreezeGuestLayout>
+    </auth-layout>
 </template>
