@@ -1,6 +1,6 @@
 <script setup>
 import { computed } from 'vue';
-import BreezeButton from '@/Components/Button.vue';
+import BreezeButton from '@/Components/Auth/BreezeButton.vue';
 import AuthLayout from '@/Layouts/Authenication.vue';
 import { Head, Link, useForm } from '@inertiajs/inertia-vue3';
 

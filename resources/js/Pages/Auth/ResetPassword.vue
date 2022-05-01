@@ -1,5 +1,5 @@
 <script setup>
-import BreezeButton from '@/Components/Button.vue';
+import BreezeButton from '@/Components/Auth/BreezeButton.vue';
 import AuthLayout from '@/Layouts/Authenication.vue';
 import BreezeInput from '@/Components/Input.vue';
 import BreezeLabel from '@/Components/Label.vue';

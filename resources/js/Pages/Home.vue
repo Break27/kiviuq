@@ -3,7 +3,7 @@
 
     <Gatekeeper>
         <template #default>
-            <Cardboard>
+            <Cardboard class="p-6">
                 <template #default>
                     THIS IS THE HOME PAGE!
                 </template>
@@ -16,4 +16,6 @@
 import { Head } from '@inertiajs/inertia-vue3';
 import Gatekeeper from "@/Layouts/Gatekeeper.vue";
 import Cardboard from '@/Components/Cardboard.vue';
+
+
 </script>

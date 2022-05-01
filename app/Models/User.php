@@ -19,6 +19,7 @@ class User extends Authenticatable
      * @var array<int, string>
      */
     protected $fillable = [
+        'username',
         'name',
         'email',
         'password',
@@ -50,7 +51,7 @@ class User extends Authenticatable
      */
     public static function find($username)
     {
-        return self::query()->where('name', $username)->first();
+        return self::query()->where('username', $username)->first();
     }
 
     /**

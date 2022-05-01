@@ -3,7 +3,7 @@
 
     <Gatekeeper>
         <template #default>
-            <Cardboard>
+            <Cardboard class="p-6">
                 <template #default>
                     <p class="text-center pb-3">THIS IS AN ABOUT PAGE!</p>
                     <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Odio ut enim blandit volutpat maecenas volutpat blandit aliquam. Aliquet bibendum enim facilisis gravida neque convallis. Pretium nibh ipsum consequat nisl vel pretium lectus quam id. Commodo viverra maecenas accumsan lacus. Purus faucibus ornare suspendisse sed nisi lacus sed. Mattis molestie a iaculis at erat pellentesque adipiscing. Lectus proin nibh nisl condimentum id venenatis. Lobortis scelerisque fermentum dui faucibus in. Vel eros donec ac odio tempor orci dapibus. Malesuada proin libero nunc consequat interdum varius sit amet. Tincidunt augue interdum velit euismod in. Id leo in vitae turpis massa sed elementum. Sit amet purus gravida quis. Quis ipsum suspendisse ultrices gravida dictum fusce ut placerat. </p>

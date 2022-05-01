@@ -8,7 +8,7 @@
                         <div class="flex justify-between h-10">
                             <div class="flex space-x-2.5">
                                 <!-- Logo -->
-                                <NavBrand :href="route('about')" :name="appName">
+                                <NavBrand :href="route('about')" :name="$page.props.appName">
                                     <BreezeApplicationLogo class="block h-8 w-auto" />
                                 </NavBrand>
 
@@ -21,7 +21,7 @@
                             <div class="hidden items-center sm:flex sm:ml-6">
                                 <!-- Search -->
                                 <div class="ml-3 relative">
-                                    <BreezeInput id="search" type="text" class="block float-right w-7 h-7 transition duration-200 ease-in-out focus:w-full" v-model="form.search" />
+                                    <NavSearch />
                                 </div>
                                 <!-- Settings Dropdown -->
                                 <!--
@@ -84,24 +84,17 @@
             </div>
 
             <!-- Page Content -->
-            <main class="flex justify-center pt-16">
+            <main class="flex justify-center pt-12">
                 <div class="flex max-w-6xl gap-2 w-full px-4 sm:px-6 lg:px-8">
-                    <div class="flex-1 w-full">
-                        <Cardboard>
-                            <template #default>
-                                THIS IS TOOLTIP LEFT
-                            </template>
-                        </Cardboard>
-                    </div>
-                    <div class="flex-shrink-0 w-1/2 top-0">
+                    <div class="flex w-full">
                         <slot />
                     </div>
-                    <div class="flex-1 w-full">
-                        <Cardboard>
-                            <template #default>
-                                THIS IS TOOLTIP RIGHT
-                            </template>
-                        </Cardboard>
+                    <!-- Tooltip -->
+                    <div class="hidden md:flex flex-shrink-0">
+                        <div class="w-64"></div>
+                        <div class="fixed w-64">
+                            <slot name="userPanel" />
+                        </div>
                     </div>
                 </div>
             </main>
@@ -111,18 +104,15 @@
 
 <script setup>
 import { ref } from 'vue';
-import { useForm } from '@inertiajs/inertia-vue3';
 import BreezeApplicationLogo from '@/Components/ApplicationLogo.vue';
 import BreezeDropdown from '@/Components/Dropdown.vue';
 import BreezeDropdownLink from '@/Components/DropdownLink.vue';
 import BreezeResponsiveNavLink from '@/Components/ResponsiveNavLink.vue';
-import BreezeInput from '@/Components/Input.vue';
-import NavBrand from "@/Components/NavBrand";
-import { appName } from '@/app.js';
-import Cardboard from "@/Components/Cardboard";
+import BreezeButton from "@/Components/Auth/BreezeButton.vue";
+import NavBrand from "@/Components/NavBrand.vue";
+import Cardboard from "@/Components/Cardboard.vue";
+import NavSearch from "@/Components/NavSearch.vue";
+import Button from "@/Components/Button.vue";
 
 const showingNavigationDropdown = ref(false);
-const form = useForm({
-    'search': '',
-});
 </script>

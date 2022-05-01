@@ -3,7 +3,7 @@
 
     <Gatekeeper>
         <template #default>
-            <Cardboard>
+            <Cardboard class="p-6">
                 <template #default>
                     HELLO {{ $page.props.username }} !
                 </template>
