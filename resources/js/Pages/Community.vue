@@ -3,7 +3,7 @@
 
     <Gatekeeper>
         <template #default>
-            <Cardboard class="p-6">
+            <Cardboard class="p-6 w-full">
                 <template #default>
                     THIS IS THE COMMUNITY PAGE!
                 </template>

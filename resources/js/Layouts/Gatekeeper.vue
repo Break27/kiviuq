@@ -1,5 +1,5 @@
 <template>
-    <common-layout>
+    <common-layout id="portal">
         <template #navLinks>
             <BreezeNavLink :href="route('home')" :active="route().current('home')">
                 HOME
@@ -32,7 +32,7 @@
                             </Button>
                         </Link>
                         <Link :href="route('login')" class="w-full">
-                            <BreezeButton @click="route('login')" class="w-full">
+                            <BreezeButton class="w-full">
                                 <span>Log In</span>
                             </BreezeButton>
                         </Link>
