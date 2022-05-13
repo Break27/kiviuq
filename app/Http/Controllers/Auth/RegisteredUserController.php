@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Models\Account;
+use App\Models\Profile;
 use App\Models\User;
 use App\Providers\RouteServiceProvider;
 use Illuminate\Auth\Events\Registered;
@@ -28,7 +30,7 @@ class RegisteredUserController extends Controller
      * Handle an incoming registration request.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\RedirectResponse
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector|\Inertia\Response
      *
      * @throws \Illuminate\Validation\ValidationException
      */
@@ -42,15 +44,25 @@ class RegisteredUserController extends Controller
 
         $user = User::create([
             'username' => $request->username,
-            'name' => $request->username,
             'email' => $request->email,
             'password' => Hash::make($request->password),
+        ]);
+
+        Profile::create([
+            'username' => $request->username,
+            'name' => $request->username,
+        ]);
+
+        Account::create([
+            'username' => $request->username,
         ]);
 
         event(new Registered($user));
 
         Auth::login($user);
 
-        return redirect(RouteServiceProvider::HOME);
+        return $request->remain
+            ? $this->create()
+            : redirect(RouteServiceProvider::HOME);
     }
 }

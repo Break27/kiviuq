@@ -49,6 +49,7 @@ class Handler extends ExceptionHandler
         $response = parent::render($request, $e);
 
         if($response->exception instanceof MethodNotAllowedHttpException) {
+            //todo
             abort('404');
         }
 

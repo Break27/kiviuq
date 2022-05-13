@@ -2,6 +2,7 @@
 
 namespace App\Http\Middleware;
 
+use App\Models\Profile;
 use Illuminate\Http\Request;
 use Inertia\Middleware;
 use Tightenco\Ziggy\Ziggy;
@@ -41,6 +42,11 @@ class HandleInertiaRequests extends Middleware
             ],
             'auth' => [
                 'user' => $request->user(),
+                'profile' => function () use ($request) {
+                    return $request->user()
+                        ? Profile::find($request->user()->username)
+                        : null;
+                },
             ],
             'ziggy' => function () {
                 return (new Ziggy)->toArray();

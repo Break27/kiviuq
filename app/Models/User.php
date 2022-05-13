@@ -20,7 +20,6 @@ class User extends Authenticatable
      */
     protected $fillable = [
         'username',
-        'name',
         'email',
         'password',
     ];
@@ -45,25 +44,32 @@ class User extends Authenticatable
     ];
 
     /**
-     * Get the user with a name.
+     * Get user with the specific username or id.
      *
-     * @param String $username
+     * @param string|int $key
+     * @return \Illuminate\Database\Eloquent\Builder|\Illuminate\Database\Eloquent\Model|object|null
      */
-    public static function find($username)
+    public static function find($key)
     {
-        return self::query()->where('username', $username)->first();
+        return self::query()->where(is_int($key)
+            ? 'id'
+            : 'username'
+            , $key)->first();
     }
 
     /**
-     * Get the user with a name or throw an exception.
+     * Get the user with the specific name or throw an exception.
      *
-     * @param String $username
-     * @throws ModelNotFoundException
+     * @param string|int $key
+     * @return \Illuminate\Database\Eloquent\Builder|\Illuminate\Database\Eloquent\Model|object
      */
-    public static function findOrFail($username)
+    public static function findOrFail($key)
     {
-        $result = self::find($username);
-        if(is_null($result)) throw new ModelNotFoundException("User '$username' is not found.");
+        $result = self::find($key);
+        if(is_null($result)) throw new ModelNotFoundException("User '$key' (".is_int($key)
+            ? 'id'
+            : 'username'
+            .") is not found.");
         return $result;
     }
 }

@@ -1,67 +1,82 @@
 <template>
-    <div @click="showModal" class="modal-trigger">
-        <slot name="trigger" />
-    </div>
+    <div>{{ this.summon ? summoned = true : '' }}</div>
 
     <template ref="root">
-        <div class="modal-mask absolute inset-0 bg-black bg-opacity-50 flex justify-center items-center">
-            <div v-if="this.$slots.CloseBg" @click="dismiss" class="flex justify-start items-start">
-                <!-- Close Button -->
-                <slot name="close-bg" />
+        <div class="modal-mask fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center">
+            <div class="fixed inset-y-0 right-0">
+                <slot name="control" />
             </div>
 
-            <Cardboard class="p-4 fixed">
-                <div class="modal-header">
-                    <slot name="header" />
-                </div>
-                <div class="modal-content">
-                    <slot name="content" />
-                </div>
-                <div class="modal-footer">
-                    <slot name="footer" />
-                </div>
-            </Cardboard>
+            <slot>
+                <Cardboard class="p-4 fixed">
+                    <div class="modal-header">
+                        <slot name="card-header" />
+                    </div>
+                    <div class="modal-body">
+                        <slot name="card-body" />
+                    </div>
+                    <div class="modal-footer">
+                        <slot name="card-footer" />
+                    </div>
+                </Cardboard>
+            </slot>
         </div>
     </template>
 </template>
 
 <script>
-import { onMounted, h, ref } from "vue";
+import { onMounted, onUnmounted, h, ref } from "vue";
 import { createTeleport } from "@/Utils/teleport";
 import Cardboard from '@/Components/Cardboard.vue';
 
+const modal = ref(null);
+const visible = ref(false);
+
+const show = (portal) => {
+    if(! visible.value) {
+        modal.value.teleport(portal);
+        visible.value = true;
+    }
+}
+
+const destroy = (timeout) => {
+    if(visible.value) {
+        modal.value.revoke(timeout);
+        visible.value = false;
+    }
+}
+
 export default {
     props: {
-        portal: {
+        summon: {
             type: String,
-            default: '#app'
+            default: ''
         },
     },
     setup(props) {
         const root = ref(null);
-        const modal = ref(null);
-        const visible = ref(false);
+        const summoned = ref(false);
 
         onMounted(() => {
             const vnode = [h('div', {}, root.value.firstChild.__vnode)];
             modal.value = createTeleport(vnode);
+
+            if(summoned.value) show(props.summon);
         });
 
-        const showModal = () => {
-            if(! visible.value) {
-                modal.value.teleport(props.portal);
-                visible.value = true;
-            }
-        }
+        onUnmounted(() => {
+            destroy(0);
+        });
 
-        const dismiss = () => {
-            if(visible.value) {
-                modal.value.revoke();
-                visible.value = false;
-            }
+        return { root, summoned };
+    },
+    methods: {
+        showModal(portal) {
+            show(portal);
+        },
+        dismiss() {
+            destroy(150);
         }
-
-        return { showModal, dismiss, root };
     },
     components: {
         Cardboard,

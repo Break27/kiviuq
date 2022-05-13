@@ -19,8 +19,22 @@
 
                         <div class="hidden items-center sm:flex sm:ml-6">
                             <!-- Search -->
-                            <div class="ml-3 relative">
+                            <div class="flex justify-end w-72 gap-2">
                                 <NavSearch />
+                                <NavMenuItem v-if="navMenuUser">
+                                    <template #icon>
+                                        <Icon size="28" color="black">
+                                            <PersonCircle />
+                                        </Icon>
+                                    </template>
+                                </NavMenuItem>
+                                <NavMenuItem v-if="navMenuMusic">
+                                    <template #icon>
+                                        <Icon size="28" color="black">
+                                            <PlayCircle />
+                                        </Icon>
+                                    </template>
+                                </NavMenuItem>
                             </div>
                             <!-- Settings Dropdown -->
                             <!--
@@ -71,7 +85,6 @@
                             <div class="font-medium text-base text-gray-800"><!--{{ $page.props.auth.user.name }}--></div>
                             <div class="font-medium text-sm text-gray-500"><!--{{ $page.props.auth.user.name }}--></div>
                         </div>
-
                         <div class="mt-3 space-y-1">
                             <BreezeResponsiveNavLink :href="route('logout')" method="post" as="button">
                                 Log Out
@@ -85,32 +98,50 @@
         <!-- Page Content -->
         <main class="flex justify-center pt-12">
             <div class="flex max-w-6xl gap-2 w-full px-4 sm:px-6 lg:px-8">
-                <div class="flex w-full">
+                <div class="flex flex-col gap-y-2 w-full">
                     <slot />
                 </div>
-                <!-- Tooltip -->
-                <div class="hidden md:flex flex-shrink-0">
-                    <div class="w-64"></div>
-                    <div class="fixed w-64">
-                        <slot name="userPanel" />
+                <!-- Sidebar -->
+                <div class="hidden md:flex flex-col flex-shrink-0">
+                    <div class="w-[18rem] grid grid-cols-1 gap-y-2">
+                        <slot name="sidebar" />
+                    </div>
+                    <div class="fixed w-[18rem] grid grid-cols-1 gap-y-2">
+                        <slot name="sidebar-fixed" />
                     </div>
                 </div>
             </div>
         </main>
+
+        <!-- Portal -->
+        <Portal />
     </div>
 </template>
 
 <script setup>
 import { ref } from 'vue';
+import { PersonCircle, PlayCircle } from '@vicons/ionicons5';
+import { Icon } from '@vicons/utils';
 import BreezeApplicationLogo from '@/Components/ApplicationLogo.vue';
-import BreezeDropdown from '@/Components/Dropdown.vue';
-import BreezeDropdownLink from '@/Components/DropdownLink.vue';
-import BreezeResponsiveNavLink from '@/Components/ResponsiveNavLink.vue';
-import BreezeButton from "@/Components/Auth/BreezeButton.vue";
-import NavBrand from "@/Components/NavBrand.vue";
-import Cardboard from "@/Components/Cardboard.vue";
-import NavSearch from "@/Components/NavSearch.vue";
-import Button from "@/Components/Button.vue";
+import BreezeDropdown from '@/Components/Form/Dropdown.vue';
+import BreezeDropdownLink from '@/Components/Form/DropdownLink.vue';
+import BreezeResponsiveNavLink from '@/Components/Navigation/ResponsiveNavLink.vue';
+import NavBrand from "@/Components/Navigation/NavBrand.vue";
+import NavSearch from "@/Components/Navigation/NavSearch.vue";
+import Button from "@/Components/Form/Button.vue";
+import Portal from '@/Components/Portal.vue';
+import NavMenuItem from "@/Components/Navigation/NavMenuItem";
 
 const showingNavigationDropdown = ref(false);
+
+defineProps({
+    navMenuUser: {
+        type: Boolean,
+        default: false,
+    },
+    navMenuMusic: {
+        type: Boolean,
+        default: false,
+    },
+});
 </script>

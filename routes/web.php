@@ -1,6 +1,7 @@
 <?php
 
-use App\Http\Controllers\UserController;
+use App\Http\Controllers\User\UserController;
+use App\Http\Controllers\User\UserProfileController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\DB;
@@ -34,7 +35,21 @@ Route::get('/community', function () {
     return Inertia::render('Community');
 })->name('community');
 
-Route::get('/@{username}', [UserController::class, 'show'])->name('user');
+Route::controller(UserController::class)->name('user.')->group(function () {
+    $uri = '/@{username}';
+
+    Route::get($uri, 'create')
+        ->name('show');
+
+    Route::get("$uri/media", 'media')
+        ->name('media');
+
+    Route::get("$uri/profile", 'profile')
+        ->name('profile');
+
+    Route::get("$uri/friends", 'friends')
+        ->name('friends');
+});
 
 Route::get('/dashboard', function () {
     return Inertia::render('Dashboard');

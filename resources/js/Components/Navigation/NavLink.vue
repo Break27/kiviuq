@@ -11,7 +11,7 @@ const classes = computed(() => props.active
 </script>
 
 <template>
-    <Link :href="href" :class="classes">
+    <Link :href="href" :class="classes" as="button">
         <slot />
     </Link>
 </template>

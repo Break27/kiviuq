@@ -5,7 +5,7 @@
         </div>
 
         <div class="flex w-full">
-            <div @focusin="this.focused = true" @focusout="this.focused = false" class="flex w-full">
+            <div @focusin="focused = true" @focusout="focused = false" class="flex w-full">
                 <slot />
             </div>
 
@@ -16,12 +16,18 @@
     </div>
 </template>
 
-<script setup>
-const props = defineProps(['childBasic', 'childFocused', 'childUnfocused',])
-</script>
-
 <script>
 export default {
+    props: [
+        'childBasic',
+        'childFocused',
+        'childUnfocused',
+    ],
+    setup(props) {
+        return {
+            props,
+        }
+    },
     data() {
         return {
             focused: false,
