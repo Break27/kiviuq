@@ -1,6 +1,6 @@
 <template>
-    <div class="flex rounded-sm border-2 ring-1 ring-gray-300">
-        <div v-if="user">
+    <div :class="['flex rounded-sm', {'border-2': !cleanBorder}, {'ring-1 ring-gray-300': !cleanRing}]">
+        <div v-if="avatar">
 
         </div>
         <div v-else class="flex w-full bg-white items-center justify-center">
@@ -18,7 +18,7 @@ import { Icon } from '@vicons/utils';
 import { Person } from '@vicons/ionicons5';
 
 const props = defineProps({
-    user: {
+    avatar: {
         type: String,
         required: true,
     },
@@ -26,5 +26,13 @@ const props = defineProps({
         type: Object,
         default: {size: '16px'},
     },
+    cleanBorder: {
+        type: Boolean,
+        default: false,
+    },
+    cleanRing: {
+        type: Boolean,
+        default: false,
+    }
 });
 </script>

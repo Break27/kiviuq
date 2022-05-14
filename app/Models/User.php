@@ -44,6 +44,19 @@ class User extends Authenticatable
     ];
 
     /**
+     * Get the account aliased to the user.
+     *
+     * @return \Illuminate\Database\Eloquent\Builder|\Illuminate\Database\Eloquent\Model|object|null
+     */
+    public function account()
+    {
+        return Account::query()
+            ->where('username', $this->username)
+            ->where('domain', config('app.domain'))
+            ->first();
+    }
+
+    /**
      * Get user with the specific username or id.
      *
      * @param string|int $key

@@ -17,7 +17,7 @@
                             <div class="grid grid-cols-2 pl-[9.5rem] pt-2 pr-4">
                                 <div class="grid grid-cols-1">
                                     <div class="text-2xl font-semibold">
-                                        {{ profile.name }}
+                                        {{ $page.props.target.profile.name }}
                                     </div>
                                     <div class="text-gray-500">
                                         {{ fullname }}
@@ -39,28 +39,40 @@
                             </div>
                         </div>
                         <div class="px-6 h-10 flex justify-items-end bg-white space-x-3">
-                            <NavLink :href="route('user.show', profile.username)"
-                                     :active="route().current('user.show')">
+                            <NavLink :href="route('account.show', account.username)"
+                                     :active="route().current('account.show')"
+                                     preserve-scroll>
                                 <NavLinkText>posts</NavLinkText>
                             </NavLink>
-                            <NavLink :href="route('user.media', profile.username)"
-                                     :active="route().current('user.media')">
+                            <NavLink :href="route('account.media', account.username)"
+                                     :active="route().current('account.media')"
+                                     preserve-scroll>
                                 <NavLinkText>media</NavLinkText>
                             </NavLink>
-                            <NavLink :href="route('user.profile', profile.username)"
-                                     :active="route().current('user.profile')">
+                            <NavLink :href="route('account.profile', account.username)"
+                                     :active="route().current('account.profile')"
+                                     preserve-scroll>
                                 <NavLinkText>profile</NavLinkText>
                             </NavLink>
-                            <NavLink :href="route('user.friends', profile.username)"
-                                     :active="route().current('user.friends')">
+                            <NavLink :href="route('account.friends', account.username)"
+                                     :active="route().current('account.friends')"
+                                     preserve-scroll>
                                 <NavLinkText>friends</NavLinkText>
                             </NavLink>
                         </div>
                     </div>
                 </div>
             </Cardboard>
-            <Cardboard class="p-6 w-full">
-                HELLO {{ profile.name }} !
+
+            <!-- Content Panels -->
+            <Posts v-if="$page.props.show" />
+
+            <Cardboard v-else class="p-6">
+                <div v-if="$page.props.media">THIS IS MEDIA!</div>
+
+                <div v-if="$page.props.profile">THIS IS PROFILE!</div>
+
+                <div v-if="$page.props.friends">THIS IS FRIENDS!</div>
             </Cardboard>
         </template>
 
@@ -95,17 +107,18 @@
 import { computed, defineComponent } from 'vue';
 import { Head, usePage } from '@inertiajs/inertia-vue3';
 import { Icon } from '@vicons/utils';
-import { Person, PersonAdd, EllipsisVertical } from '@vicons/ionicons5';
+import { PersonAdd, EllipsisVertical } from '@vicons/ionicons5';
 import Gatekeeper from '@/Layouts/Gatekeeper.vue';
 import Cardboard from '@/Components/Cardboard.vue';
 import UserAvatar from '@/Components/User/UserAvatar.vue';
 import StatBoard from '@/Components/Sidebar/StatBoard.vue';
 import Button from '@/Components/Form/Button.vue';
 import NavLink from '@/Components/Navigation/NavLink';
+import Posts from "@/Components/Post/Posts";
 
 const target = computed(() => usePage().props.value.target);
-const profile = target.value.profile;
-const fullname = profile.username + '@' + usePage().props.value.app.domain;
+const account = target.value.account;
+const fullname = account.username + '@' + usePage().props.value.app.domain;
 
 const NavLinkText = defineComponent({
     template: `

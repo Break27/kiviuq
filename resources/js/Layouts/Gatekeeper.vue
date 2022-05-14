@@ -8,8 +8,8 @@
                 COMMUNITY
             </BreezeNavLink>
             <BreezeNavLink v-if="isAuth"
-                           :href="route('user.show', auth.user.username)"
-                           :active="route().current('user.show', { username: auth.user.username })">
+                           :href="route('account.show', auth.account.username)"
+                           :active="route().current('account.show', { username: auth.account.username })">
                 <span class="uppercase">
                     {{ auth.profile.name }}
                 </span>

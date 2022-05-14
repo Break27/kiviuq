@@ -9,7 +9,7 @@ class Profile extends Model
 {
     public $incrementing = false;
 
-    protected $primaryKey = 'username';
+    protected $primaryKey = 'uuid';
 
     protected $keyType = 'string';
 
@@ -19,33 +19,9 @@ class Profile extends Model
      * @var array<int, string>
      */
     protected $fillable = [
-        'username',
+        'uuid',
         'name',
         'avatar',
         'bio',
     ];
-
-    /**
-     * Get profile with the specific username.
-     *
-     * @param string $username
-     * @return \Illuminate\Database\Eloquent\Builder|\Illuminate\Database\Eloquent\Model|object|null
-     */
-    public static function find(string $username)
-    {
-        return self::query()->where('username', $username)->first();
-    }
-
-    /**
-     * Get profile with the specific username or throw an exception.
-     *
-     * @param string $username
-     * @return \Illuminate\Database\Eloquent\Builder|\Illuminate\Database\Eloquent\Model|object
-     */
-    public static function findOrFail(string $username)
-    {
-        $result = self::find($username);
-        if(is_null($result)) throw new ModelNotFoundException("Profile '$username' (username) is not found.");
-        return $result;
-    }
 }

@@ -1,6 +1,6 @@
 <template>
     <div class="min-h-screen bg-gray-100">
-        <div class="fixed top-0 w-full">
+        <div class="fixed top-0 w-full z-10">
             <nav class="bg-white border-b border-gray-100">
                 <!-- Primary Navigation Menu -->
                 <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">

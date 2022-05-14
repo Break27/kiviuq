@@ -14,7 +14,7 @@ class CreateProfilesTable extends Migration
     public function up()
     {
         Schema::create('profiles', function (Blueprint $table) {
-            $table->string('username')->primary();
+            $table->uuid('uuid')->primary();
             $table->string('name');
             $table->string('avatar')->default('');
             $table->string('bio')->default('');

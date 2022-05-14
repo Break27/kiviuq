@@ -3,7 +3,7 @@
         <template #default v-if="isAuth">
             <div class="flex">
                 <div class="flex-col">
-                    <span class="flex"> Username: @{{ $page.props.auth.user.username }} </span>
+                    <span class="flex"> Username: @{{ $page.props.auth.account.username }} </span>
                     <span class="flex"> Name: {{ $page.props.auth.profile.name }} </span>
                 </div>
                 <span class="float-right text-blue-500">

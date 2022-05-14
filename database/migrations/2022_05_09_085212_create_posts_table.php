@@ -15,6 +15,11 @@ class CreatePostsTable extends Migration
     {
         Schema::create('posts', function (Blueprint $table) {
             $table->id();
+            $table->uuid('author_uuid')->unique();
+            $table->string('content');
+            $table->integer('score')->default(0);
+            $table->enum('visibility', ['public', 'unlisted', 'private'])->default('public');
+            $table->boolean('active')->default(true);
             $table->timestamps();
         });
     }

@@ -3,15 +3,11 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
-use App\Models\Account;
-use App\Models\Profile;
-use App\Models\User;
 use App\Providers\RouteServiceProvider;
-use Illuminate\Auth\Events\Registered;
+use App\Services\AccountService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Hash;
-use Illuminate\Validation\Rules;
+
 use Inertia\Inertia;
 
 class RegisteredUserController extends Controller
@@ -36,29 +32,7 @@ class RegisteredUserController extends Controller
      */
     public function store(Request $request)
     {
-        $request->validate([
-            'username' => 'required|string|max:255|unique:users',
-            'email' => 'required|string|email|max:255|unique:users',
-            'password' => ['required', 'confirmed', Rules\Password::defaults()],
-        ]);
-
-        $user = User::create([
-            'username' => $request->username,
-            'email' => $request->email,
-            'password' => Hash::make($request->password),
-        ]);
-
-        Profile::create([
-            'username' => $request->username,
-            'name' => $request->username,
-        ]);
-
-        Account::create([
-            'username' => $request->username,
-        ]);
-
-        event(new Registered($user));
-
+        $user = AccountService::createAccount($request);
         Auth::login($user);
 
         return $request->remain

@@ -1,7 +1,7 @@
 <?php
 
-use App\Http\Controllers\User\UserController;
-use App\Http\Controllers\User\UserProfileController;
+use App\Http\Controllers\PostController;
+use App\Http\Controllers\User\ProfileController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\DB;
@@ -35,21 +35,22 @@ Route::get('/community', function () {
     return Inertia::render('Community');
 })->name('community');
 
-Route::controller(UserController::class)->name('user.')->group(function () {
-    $uri = '/@{username}';
-
-    Route::get($uri, 'create')
+Route::controller(ProfileController::class)->name('account.')->group(function () {
+    Route::get('/@{username}', 'show')
         ->name('show');
 
-    Route::get("$uri/media", 'media')
+    Route::get("/@{username}/media", 'show')
         ->name('media');
 
-    Route::get("$uri/profile", 'profile')
+    Route::get("/@{username}/profile", 'show')
         ->name('profile');
 
-    Route::get("$uri/friends", 'friends')
+    Route::get("/@{username}/friends", 'show')
         ->name('friends');
 });
+
+Route::get('/posts/{id}', [PostController::class, 'show'])
+    ->name('post');
 
 Route::get('/dashboard', function () {
     return Inertia::render('Dashboard');

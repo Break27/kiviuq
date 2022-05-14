@@ -3,9 +3,12 @@
 namespace App\Http\Controllers\User;
 
 use App\Http\Controllers\Controller;
+use App\Models\Account;
 use App\Models\Profile;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
 class ProfileController extends Controller
@@ -15,31 +18,34 @@ class ProfileController extends Controller
      *
      * @return \Inertia\Response
      */
-    public function create()
+    public function show(Request $request, string $username)
     {
-        return Inertia::render('Profile');
-    }
+        $fullname = explode('@', $username, 2);
+        $username = $fullname[0];
+        $domain = count($fullname) == 2
+            ? $fullname[1]
+            : config('app.domain');
 
-    /**
-     * Handle an incoming profile alteration request.
-     *
-     * @param \Illuminate\Http\Request $request
-     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector|\Inertia\Response
-     */
-    public function store(Request $request)
-    {
-        if(Auth::guard('web')->check()) {
-            $profile = Profile::findOrFail($request->user()->username);
+        try {
+            $account = Account::query()
+                ->where('username', $username)
+                ->where('domain', $domain)
+                ->firstOrFail();
 
-            if($request->has('name')) $profile->name = $request->name;
+            $action = explode('.', Route::currentRouteName())[1];
+            $isOwner = Auth::guard('web')->check()
+                && strcmp($request->user()->uuid, $account->uuid) == 0;
 
-            $profile->save();
-
-            return $request->dest
-                ? redirect($request->dest)
-                : $this->create();
+            return Inertia::render('User/Profile', [
+                'target' => [
+                    'isOwner' => $isOwner,
+                    'account' => $account,
+                    'profile' => $account->profile(),
+                ],
+                "$action" => 1,
+            ]);
+        } catch(ModelNotFoundException $_) {
+            abort('404');
         }
-        //throw new Exception()
-        //todo
     }
 }
