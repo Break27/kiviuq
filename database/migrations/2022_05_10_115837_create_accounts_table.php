@@ -17,6 +17,9 @@ class CreateAccountsTable extends Migration
             $table->uuid('uuid')->primary();
             $table->string('username')->unique();
             $table->string('domain');
+            $table->integer('posts')->default(0);
+            $table->integer('following')->default(0);
+            $table->integer('followers')->default(0);
 
             $table->timestamps();
         });

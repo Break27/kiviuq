@@ -2,4 +2,5 @@
 @import 'tailwindcss/components';
 @import 'tailwindcss/utilities';
 
-@import "images.css";
+@import 'scrollbar.css';
+@import 'images.css';

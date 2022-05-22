@@ -4,8 +4,8 @@
             <Button :class="classObject"
                     @focus="focused = true"
                     @blur="focused = false"
-                    clean-padding
-                    clean-color>
+                    use-padding=""
+                    use-color="">
                 <slot name="icon" />
             </Button>
         </slot>

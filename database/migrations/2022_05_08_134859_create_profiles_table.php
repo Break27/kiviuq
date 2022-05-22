@@ -18,6 +18,7 @@ class CreateProfilesTable extends Migration
             $table->string('name');
             $table->string('avatar')->default('');
             $table->string('bio')->default('');
+            $table->string('banner')->default('');
             $table->timestamps();
         });
     }

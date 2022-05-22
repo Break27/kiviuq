@@ -1,42 +1,45 @@
 <template>
-    <button :type="type"
-            :class="[
-                {'inline-flex justify-center items-center rounded-md': !clean},
-                {'px-4 py-2': !cleanPadding},
-                {'font-semibold text-xs text-white uppercase tracking-widest': !cleanText},
-                {'transition ease-in-out duration-150': !cleanTransition},
-                {'bg-gray-800 border border-transparent focus:outline-none focus:border-gray-900 focus:shadow-outline-gray active:bg-gray-900 hover:bg-gray-700': !cleanColor}
-            ]"
-    >
+    <button v-if="!fake" :type="type" :class="classes">
         <slot />
     </button>
+    <div v-else :class="[classes, 'cursor-default']">
+        <slot />
+    </div>
 </template>
 
 <script setup>
+import {computed} from "vue";
+
 const props = defineProps({
     type: {
         type: String,
         default: 'submit',
     },
-    clean: {
+    fake: {
         type: Boolean,
         default: false,
     },
-    cleanPadding: {
-        type: Boolean,
-        default: false,
+    useClass: {
+        type: String,
+        default: 'inline-flex justify-center items-center rounded-md',
     },
-    cleanText: {
-        type: Boolean,
-        default: false,
+    usePadding: {
+        type: String,
+        default: 'px-4 py-2',
     },
-    cleanTransition: {
-        type: Boolean,
-        default: false,
+    useText: {
+        type: String,
+        default: 'font-semibold text-xs text-white uppercase tracking-widest',
     },
-    cleanColor: {
-        type: Boolean,
-        default: false,
+    useTransition: {
+        type: String,
+        default: 'transition ease-in-out duration-150',
+    },
+    useColor: {
+        type: String,
+        default: 'bg-gray-800 border border-transparent focus:outline-none focus:border-gray-900 focus:shadow-outline-gray active:bg-gray-900 hover:bg-gray-700',
     },
 });
+
+const classes = computed(() => [props.useClass, props.usePadding, props.useText, props.useTransition, props.useColor]);
 </script>

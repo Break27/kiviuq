@@ -1,11 +1,10 @@
 <?php
 
+use App\Http\Controllers\AppController;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\User\ProfileController;
-use Illuminate\Foundation\Application;
+use App\Http\Controllers\User\SettingsController;
 use Illuminate\Support\Facades\Route;
-use Illuminate\Support\Facades\DB;
-use Inertia\Inertia;
 
 /*
 |--------------------------------------------------------------------------
@@ -18,42 +17,65 @@ use Inertia\Inertia;
 |
 */
 
-Route::get('/', function () {
-    return Inertia::render('Home', [
-        'canLogin' => Route::has('login'),
-        'canRegister' => Route::has('register'),
-        'laravelVersion' => Application::VERSION,
-        'phpVersion' => PHP_VERSION,
-    ]);
-})->name('home');
+Route::controller(AppController::class)
+    ->name('app.')
+    ->group(function () {
+        Route::get('/', 'home')
+            ->name('home');
 
-Route::get('/about', function () {
-    return Inertia::render('About');
-})->name('about');
+        Route::get('/about', 'about')
+            ->name('about');
 
-Route::get('/community', function () {
-    return Inertia::render('Community');
-})->name('community');
+        Route::get('/community', 'community')
+            ->name('community');
+    });
 
-Route::controller(ProfileController::class)->name('account.')->group(function () {
-    Route::get('/@{username}', 'show')
-        ->name('show');
+Route::controller(ProfileController::class)
+    ->name('account.')
+    ->group(function () {
+        Route::get('/@{username}', 'show')
+            ->name('show');
 
-    Route::get("/@{username}/media", 'show')
-        ->name('media');
+        Route::get("/@{username}/media", 'show')
+            ->name('media');
 
-    Route::get("/@{username}/profile", 'show')
-        ->name('profile');
+        Route::get("/@{username}/zone", 'show')
+            ->name('zone');
 
-    Route::get("/@{username}/friends", 'show')
-        ->name('friends');
-});
+        Route::get("/@{username}/friends", 'show')
+            ->name('friends');
+    });
 
-Route::get('/posts/{id}', [PostController::class, 'show'])
-    ->name('post');
+Route::controller(SettingsController::class)
+    ->prefix('settings')
+    ->name('settings.')
+    ->group(function () {
+        Route::post('/', 'store');
 
-Route::get('/dashboard', function () {
-    return Inertia::render('Dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
+        Route::get('/', 'show')
+            ->middleware(['auth'])
+            ->name('profile');
+
+        Route::get('/security', 'show')
+            ->name('security');
+
+        Route::get('/appearance', 'show')
+            ->name('appearance');
+
+        Route::get('/email', 'show')
+            ->name('email');
+    });
+
+Route::controller(PostController::class)
+    ->prefix('post')
+    ->name('post.')
+    ->group(function () {
+        Route::get('publish', 'create')
+            ->middleware(['auth', 'verified'])
+            ->name('publish');
+
+        Route::get('{id}', 'show')
+            ->name('show');
+    });
 
 require __DIR__.'/auth.php';

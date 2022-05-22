@@ -22,6 +22,10 @@ const props = defineProps({
         type: String,
         required: true,
     },
+    internal: {
+        type: Object,
+        default: {},
+    },
     fallback: {
         type: Object,
         default: {size: '16px'},

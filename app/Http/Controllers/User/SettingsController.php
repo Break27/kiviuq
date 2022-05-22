@@ -5,9 +5,35 @@ namespace App\Http\Controllers\User;
 use App\Http\Controllers\Controller;
 use App\Services\AccountService;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Route;
+use Inertia\Inertia;
 
-class AccountController extends Controller
+class SettingsController extends Controller
 {
+    /**
+     *
+     * @return \Inertia\Response
+     */
+    public function show()
+    {
+        $action = explode('.', Route::currentRouteName())[1];
+
+        return Inertia::render('User/Settings/View', [
+            'action' => [
+                "$action" => 1
+            ],
+        ]);
+    }
+
+    /**
+     *
+     *
+     */
+    public function store(Request $request)
+    {
+        return $this->updateProfile($request);
+    }
+
     /**
      * Handle an incoming profile alteration request.
      *
@@ -20,6 +46,6 @@ class AccountController extends Controller
 
         return $request->dest
             ? redirect($request->dest)
-            : $this->create();
+            : $this->show();
     }
 }

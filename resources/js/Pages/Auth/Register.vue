@@ -2,12 +2,14 @@
     <auth-layout>
         <Head title="Register" />
 
-        <ValidationErrors class="mb-4" />
+        <ValidationErrors :errors="$page.props.errors"
+                          class="mb-4"
+        />
 
         <form @submit.prevent="submit">
             <div>
                 <BreezeLabel for="username" value="Username" />
-                <InputWrapper child-basic="flex mt-1 border border-l-0 rounded-r-md items-center"
+                <InputWrapper child-basic="mt-1 border border-l-0 rounded-r-md items-center"
                               child-focused="border-indigo-300"
                               child-unfocused="border-gray-300">
                     <template #default>
@@ -141,7 +143,7 @@ const submit = () => {
 const update = () => {
     finished.value = true;
     setTimeout(() => {
-        updateForm.post(route('profile'));
+        updateForm.post(route('settings.show'));
     }, 3000);
 }
 

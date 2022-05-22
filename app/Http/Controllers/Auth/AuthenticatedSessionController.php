@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Auth;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Auth\LoginRequest;
 use App\Providers\RouteServiceProvider;
+use http\Cookie;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
@@ -29,7 +30,7 @@ class AuthenticatedSessionController extends Controller
      * Handle an incoming authentication request.
      *
      * @param  \App\Http\Requests\Auth\LoginRequest  $request
-     * @return \Illuminate\Http\RedirectResponse
+     * @return \Illuminate\Http\JsonResponse
      */
     public function store(LoginRequest $request)
     {
@@ -37,7 +38,9 @@ class AuthenticatedSessionController extends Controller
 
         $request->session()->regenerate();
 
-        return redirect()->intended(RouteServiceProvider::HOME);
+        return response()->json([
+            'redirect' => redirect()->intended(RouteServiceProvider::HOME)->getTargetUrl(),
+        ]);
     }
 
     /**
@@ -54,6 +57,6 @@ class AuthenticatedSessionController extends Controller
 
         $request->session()->regenerateToken();
         // redirect and reload the page
-        return Inertia::location('/');
+        return Inertia::location(RouteServiceProvider::HOME);
     }
 }

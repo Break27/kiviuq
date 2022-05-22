@@ -2,7 +2,7 @@
     <auth-layout>
         <Head title="Log in" />
 
-        <BreezeValidationErrors class="mb-4" />
+        <ValidationErrors class="mb-4" :errors="errors" />
 
         <div v-if="status" class="mb-4 font-medium text-sm text-green-600">
             {{ status }}
@@ -40,28 +40,52 @@
 </template>
 
 <script setup>
+import ValidationErrors from '@/Components/Form/ValidationErrors.vue';
+import { Head, Link } from '@inertiajs/inertia-vue3';
+import { Inertia } from "@inertiajs/inertia";
+import { ref } from 'vue';
+import axios from 'axios';
 import BreezeButton from '@/Components/Form/Button.vue';
 import BreezeCheckbox from '@/Components/Form/Checkbox.vue';
 import AuthLayout from '@/Layouts/Authenication.vue';
 import BreezeInput from '@/Components/Form/Input.vue';
 import BreezeLabel from '@/Components/Form/Label.vue';
-import BreezeValidationErrors from '@/Components/Form/ValidationErrors.vue';
-import { Head, Link, useForm } from '@inertiajs/inertia-vue3';
+
 
 defineProps({
     canResetPassword: Boolean,
     status: String,
 });
 
-const form = useForm({
+const form = ref({
     email: '',
     password: '',
-    remember: false
+    remember: false,
+    processing: false,
 });
 
+const errors = ref(null);
+const api = axios.create();
+api.defaults.withCredentials = true;
+
 const submit = () => {
-    form.post(route('login'), {
-        onFinish: () => form.reset('password'),
+    //form.post(route('login'), {
+    //    onFinish: () => form.reset('password'),
+    //});
+    form.value.processing = true;
+    api.get('/sanctum/csrf-cookie')
+    .then(() => {
+        api.post(route('login'), form.value)
+        .then(response => {
+            Inertia.get(response.data.redirect);
+        })
+        .catch(error => {
+            errors.value = error.response.data.errors;
+        })
+        .then(() => {
+            form.value.password = '';
+            form.value.processing = false;
+        });
     });
 };
 </script>

@@ -1,30 +1,37 @@
 <template>
-    <div v-if="hasErrorsRef">
+    <div v-if=" !errors ? false : check(errors)">
         <div class="font-medium text-red-600">Whoops! Something went wrong.</div>
 
         <ul class="mt-3 list-disc list-inside text-sm text-red-600">
-            <li v-for="(error, key) in errors" :key="key">{{ error }}</li>
+            <li v-for="(error, key) in errors" :key="key">
+                {{ Array.isArray(error) ? error.join(' ') : error }}
+            </li>
         </ul>
     </div>
 </template>
 
 <script>
-import { computed } from 'vue';
-import { usePage } from '@inertiajs/inertia-vue3';
+import { ref } from 'vue';
 
-const errors = computed(() => usePage().props.value.errors);
-const hasErrorsRef = computed(() => Object.keys(errors.value).length > 0);
+const hasErrors = ref(false);
 
 export default {
+    props: {
+        errors: {
+            type: Object,
+            default: null
+        },
+    },
     setup() {
-        return { errors, hasErrorsRef };
+        const check = (errors) => {
+            hasErrors.value = Object.keys(errors).length > 0;
+            return hasErrors.value;
+        }
+        return { check }
     },
     methods: {
-        getErrors() {
-            return errors.value;
-        },
         hasErrors() {
-            return hasErrorsRef.value;
+            return hasErrors.value;
         },
     }
 }

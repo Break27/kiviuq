@@ -29,7 +29,9 @@ const submit = () => {
     <auth-layout>
         <Head title="Reset Password" />
 
-        <BreezeValidationErrors class="mb-4" />
+        <BreezeValidationErrors :errors="$page.props.errors"
+                                class="mb-4"
+        />
 
         <form @submit.prevent="submit">
             <div>

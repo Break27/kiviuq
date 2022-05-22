@@ -1,6 +1,6 @@
 <template>
     <div :id="props.name" ref="portal"
-         :class="['transition-all ease-in-out', {'opacity-0': !visible}]">
+         :class="['transition-all duration-300 ease-in-out absolute z-20', {'opacity-0': !visible}]">
     </div>
 </template>
 
@@ -19,6 +19,10 @@ const visible = ref(false);
 
 function handleEvent(event) {
     visible.value = event.detail.arrival;
+    const classes = document.getElementsByClassName('os-scrollbar-vertical').item(0).classList;
+    visible.value
+        ? classes.add('hidden')
+        : classes.remove('hidden');
 }
 
 onMounted(() => {

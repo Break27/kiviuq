@@ -44,6 +44,25 @@ class User extends Authenticatable
     ];
 
     /**
+     *
+     * @return string
+     */
+    public function generateToken() {
+        $this->revokeToken();
+        return $this->createToken('main')->plainTextToken;
+    }
+
+    /**
+     *
+     * @return void
+     */
+    public function revokeToken() {
+        $token = $this->tokens()->where('name', 'main')->first();
+        if(!is_null($token))
+            $token->delete();
+    }
+
+    /**
      * Get the account aliased to the user.
      *
      * @return \Illuminate\Database\Eloquent\Builder|\Illuminate\Database\Eloquent\Model|object|null

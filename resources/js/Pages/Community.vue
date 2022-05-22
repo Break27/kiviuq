@@ -1,19 +1,17 @@
 <template>
     <Head title="Community" />
 
-    <Gatekeeper>
-        <template #default>
-            <Cardboard class="p-6 w-full">
-                <template #default>
-                    THIS IS THE COMMUNITY PAGE!
-                </template>
-            </Cardboard>
-        </template>
-    </Gatekeeper>
+    <common-layout>
+        <Cardboard class="p-6 w-full">
+            <template #default>
+                THIS IS THE COMMUNITY PAGE!
+            </template>
+        </Cardboard>
+    </common-layout>
 </template>
 
 <script setup>
 import { Head } from '@inertiajs/inertia-vue3';
-import Gatekeeper from '@/Layouts/Gatekeeper.vue';
+import CommonLayout from '@/Layouts/Common.vue';
 import Cardboard from '@/Components/Cardboard.vue';
 </script>

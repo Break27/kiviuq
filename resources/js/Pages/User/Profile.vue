@@ -1,7 +1,7 @@
 <template>
-    <Head :title="fullname" />
+    <Head :title="$page.props.target.profile.name + ' (' + fullname + ')'" />
 
-    <Gatekeeper nav-menu-user nav-menu-music>
+    <common-layout nav-menu-user nav-menu-music>
         <template #default>
             <Cardboard>
                 <div class="flex flex-col user-banner">
@@ -10,7 +10,7 @@
                         <div class="h-10">
                             <UserAvatar class="w-28 h-28 ml-6 absolute"
                                         :fallback="{size: '96px'}"
-                                        :user="''"
+                                        :avatar="target.profile.avatar"
                             />
                         </div>
                         <div class="h-20 bg-white">
@@ -24,13 +24,22 @@
                                     </div>
                                 </div>
                                 <div class="flex justify-end items-center gap-x-2">
-                                    <Button clean-padding class="p-2">
-                                        <Icon size="18"><PersonAdd /></Icon>
-                                        <span class="pl-2">follow</span>
-                                    </Button>
-                                    <Button class="p-1 bg-transparent border-2 hover:bg-gray-100 active:bg-gray-200"
-                                            clean-padding
-                                            clean-color>
+                                    <!-- todo - follow feature -->
+                                    <Link :href="isOwner ? route('settings.profile') : '.'">
+                                        <Button use-padding="p-2">
+                                            <div v-if="isOwner" class="flex">
+                                                <Icon size="16"><PencilAlt /></Icon>
+                                                <span class="pl-2">edit profile</span>
+                                            </div>
+                                            <div v-else class="flex">
+                                                <Icon size="18"><PersonAdd /></Icon>
+                                                <span class="pl-2">follow</span>
+                                            </div>
+                                        </Button>
+                                    </Link>
+                                    <Button use-color="bg-transparent border-2 hover:bg-gray-100 active:bg-gray-200"
+                                            use-padding="p-1"
+                                            v-if="!isOwner">
                                         <Icon size="24">
                                             <EllipsisVertical class="text-gray-400" />
                                         </Icon>
@@ -49,10 +58,10 @@
                                      preserve-scroll>
                                 <NavLinkText>media</NavLinkText>
                             </NavLink>
-                            <NavLink :href="route('account.profile', account.username)"
-                                     :active="route().current('account.profile')"
+                            <NavLink :href="route('account.zone', account.username)"
+                                     :active="route().current('account.zone')"
                                      preserve-scroll>
-                                <NavLinkText>profile</NavLinkText>
+                                <NavLinkText>zone</NavLinkText>
                             </NavLink>
                             <NavLink :href="route('account.friends', account.username)"
                                      :active="route().current('account.friends')"
@@ -65,59 +74,56 @@
             </Cardboard>
 
             <!-- Content Panels -->
-            <Posts v-if="$page.props.show" />
+            <Timeline v-if="$page.props.action.show"
+                      :author-uuid="account.uuid"
+            />
 
             <Cardboard v-else class="p-6">
-                <div v-if="$page.props.media">THIS IS MEDIA!</div>
+                <div v-if="$page.props.action.media">THIS IS MEDIA!</div>
 
-                <div v-if="$page.props.profile">THIS IS PROFILE!</div>
+                <div v-if="$page.props.action.zone">THIS IS PROFILE!</div>
 
-                <div v-if="$page.props.friends">THIS IS FRIENDS!</div>
+                <div v-if="$page.props.action.friends">THIS IS FRIENDS!</div>
             </Cardboard>
         </template>
 
-        <template #sidebar-fixed-expand>
+        <template #sidebar-fixed>
             <div></div>
         </template>
 
-        <template #sidebar-expand>
+        <template #sidebar>
             <Cardboard class="py-4">
                 <div class="grid grid-cols-3 text-center divide-x-2 px-1">
-                    <StatBoard title="posts">{{ 0 }}</StatBoard>
-                    <StatBoard title="following">{{ 0 }}</StatBoard>
-                    <StatBoard title="followers">{{ 0 }}</StatBoard>
+                    <StatBoard title="posts">{{ account.posts }}</StatBoard>
+                    <StatBoard title="following">{{ account.following }}</StatBoard>
+                    <StatBoard title="followers">{{ account.followers }}</StatBoard>
                 </div>
             </Cardboard>
-            <Cardboard>
-                <div class="grid grid-cols-1">
-                    <div class="bg-blue-400 text-white px-4 py-1 font-semibold uppercase">
-                        bio
-                    </div>
-                    <div class="pt-1 px-4 pb-4">
-                        THIS IS BIO! Elementum pulvinar etiam non quam lacus suspendisse
-                        faucibus interdum. Nulla posuere sollicitudin aliquam ultrices sagittis.
-                    </div>
+            <Cardboard v-if="target.profile.bio" title="bio" title-class="bg-blue-400">
+                <div class="pt-1 px-4 pb-4">
+                    <span>{{ target.profile.bio }}</span>
                 </div>
             </Cardboard>
         </template>
-    </Gatekeeper>
+    </common-layout>
 </template>
 
 <script setup>
 import { computed, defineComponent } from 'vue';
-import { Head, usePage } from '@inertiajs/inertia-vue3';
+import { Head, Link, usePage } from '@inertiajs/inertia-vue3';
 import { Icon } from '@vicons/utils';
 import { PersonAdd, EllipsisVertical } from '@vicons/ionicons5';
-import Gatekeeper from '@/Layouts/Gatekeeper.vue';
+import { PencilAlt } from "@vicons/fa";
+import CommonLayout from '@/Layouts/Common.vue';
 import Cardboard from '@/Components/Cardboard.vue';
 import UserAvatar from '@/Components/User/UserAvatar.vue';
-import StatBoard from '@/Components/Sidebar/StatBoard.vue';
 import Button from '@/Components/Form/Button.vue';
 import NavLink from '@/Components/Navigation/NavLink';
-import Posts from "@/Components/Post/Posts";
+import Timeline from '@/Components/Post/Timeline';
 
 const target = computed(() => usePage().props.value.target);
 const account = target.value.account;
+const isOwner = target.value.isOwner;
 const fullname = account.username + '@' + usePage().props.value.app.domain;
 
 const NavLinkText = defineComponent({
@@ -125,6 +131,22 @@ const NavLinkText = defineComponent({
         <span class="text-md uppercase font-semibold">
             <slot />
         </span>
+    `,
+});
+
+const StatBoard = defineComponent({
+    props: [
+        'title',
+    ],
+    template: `
+        <div class="grid grid-row-2">
+            <span class="uppercase text-gray-500 font-semibold text-xs">
+                {{ title }}
+            </span>
+            <span class="text-xl text-gray-800 font-semibold">
+                <slot />
+            </span>
+        </div>
     `,
 });
 </script>

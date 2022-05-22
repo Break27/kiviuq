@@ -41,11 +41,14 @@ class HandleInertiaRequests extends Middleware
                 'name' => config('app.name'),
                 'domain' => config('app.domain'),
             ],
-            'auth' => [
-                'user' => $user,
-                'account' => ! is_null($user) ? $user->account() : [],
-                'profile' => ! is_null($user) ? $user->account()->profile() : [],
-            ],
+            'auth' => function () use ($user) {
+                return is_null($user) ? []
+                    : [
+                        'user' => $user,
+                        'account' => $user->account(),
+                        'profile' => $user->account()->profile(),
+                    ];
+            },
             'ziggy' => function () {
                 return (new Ziggy)->toArray();
             },

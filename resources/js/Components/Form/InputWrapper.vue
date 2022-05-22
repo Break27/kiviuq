@@ -9,7 +9,7 @@
                 <slot />
             </div>
 
-            <div :class="classObject">
+            <div :class="['flex', classObject]">
                 <slot name="suffix" />
             </div>
         </div>

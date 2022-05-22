@@ -18,6 +18,6 @@ class AccountController extends Controller
     public function updateCredentials(Request $request) {
         $profile = AccountService::updateProfile($request);
         // todo
-        return response()->json();
+        return response()->json($profile);
     }
 }

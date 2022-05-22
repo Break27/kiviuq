@@ -14,9 +14,9 @@ class CreatePostsTable extends Migration
     public function up()
     {
         Schema::create('posts', function (Blueprint $table) {
-            $table->id();
-            $table->uuid('author_uuid')->unique();
-            $table->string('content');
+            $table->string('id')->primary();
+            $table->uuid('author_uuid');
+            $table->string('filename');
             $table->integer('score')->default(0);
             $table->enum('visibility', ['public', 'unlisted', 'private'])->default('public');
             $table->boolean('active')->default(true);

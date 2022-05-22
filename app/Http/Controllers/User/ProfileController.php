@@ -20,32 +20,38 @@ class ProfileController extends Controller
      */
     public function show(Request $request, string $username)
     {
-        $fullname = explode('@', $username, 2);
-        $username = $fullname[0];
-        $domain = count($fullname) == 2
-            ? $fullname[1]
-            : config('app.domain');
+        $action = explode('.', Route::currentRouteName())[1];
 
-        try {
-            $account = Account::query()
-                ->where('username', $username)
-                ->where('domain', $domain)
-                ->firstOrFail();
+        return Inertia::render('User/Profile', [
+            'target' => function () use($request, $username) {
+                $fullname = explode('@', $username, 2);
+                $username = $fullname[0];
+                $domain = count($fullname) == 2
+                    ? $fullname[1]
+                    : config('app.domain');
 
-            $action = explode('.', Route::currentRouteName())[1];
-            $isOwner = Auth::guard('web')->check()
-                && strcmp($request->user()->uuid, $account->uuid) == 0;
+                try {
+                    $account = Account::query()
+                        ->where('username', $username)
+                        ->where('domain', $domain)
+                        ->firstOrFail();
 
-            return Inertia::render('User/Profile', [
-                'target' => [
+                    $isOwner = Auth::guard('web')->check()
+                        && strcmp($request->user()->account()->uuid, $account->uuid) == 0;
+
+                } catch(ModelNotFoundException $_) {
+                    abort('404');
+                }
+
+                return [
                     'isOwner' => $isOwner,
                     'account' => $account,
                     'profile' => $account->profile(),
-                ],
+                ];
+            },
+            'action' => [
                 "$action" => 1,
-            ]);
-        } catch(ModelNotFoundException $_) {
-            abort('404');
-        }
+            ],
+        ]);
     }
 }

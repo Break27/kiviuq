@@ -31,7 +31,9 @@ const submit = () => {
             {{ status }}
         </div>
 
-        <BreezeValidationErrors class="mb-4" />
+        <BreezeValidationErrors :errors="$page.props.errors"
+                                class="mb-4"
+        />
 
         <form @submit.prevent="submit">
             <div>
