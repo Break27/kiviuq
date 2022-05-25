@@ -15,9 +15,10 @@
     </Cardboard>
 </template>
 
-<script setup>
+<script lang="ts" setup>
 import { Icon } from '@vicons/utils';
-import { Airplane } from '@vicons/ionicons5';
-import Cardboard from '@/Components/Cardboard';
-import TabLink from '@/Components/TabLink';
+import Airplane from '@vicons/ionicons5/Airplane';
+
+import Cardboard from '@/Components/Cardboard.vue';
+import TabLink from '@/Components/TabLink.vue';
 </script>

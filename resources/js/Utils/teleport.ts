@@ -1,20 +1,26 @@
-import { render, createVNode } from 'vue';
+import { render, createVNode, VNode } from 'vue';
 
 const inboundEvent = new CustomEvent('notify', {detail: {'arrival': true}});
 const outboundEvent = new CustomEvent('notify', {detail: {'arrival': false}});
 
-export const createTeleport = function (component, props = {}) {
-    const container = document.createElement('div');
-    const vnode = createVNode('div', props, component);
-    let target = null;
+export class Teleport {
+    container: HTMLElement;
+    vnode: VNode;
+    target: HTMLElement | null;
+
+    constructor(component, props = {}) {
+        this.container = document.createElement('div');
+        this.vnode = createVNode('div', props, component);
+        this.target = null;
+    }
 
     /**
      * Notify the target portal.
      *
      * @param arrival
      */
-    const notify = (arrival) => {
-        target?.dispatchEvent(arrival ? inboundEvent : outboundEvent);
+    notify(arrival) {
+        this.target?.dispatchEvent(arrival ? inboundEvent : outboundEvent);
     }
 
     /**
@@ -22,8 +28,8 @@ export const createTeleport = function (component, props = {}) {
      *
      * @param portal
      */
-    const changeTo = (portal) => {
-        target = document.getElementById(portal.startsWith('#')
+    changeTo(portal) {
+        this.target = document.getElementById(portal.startsWith('#')
             ? portal.substring(1)
             : portal
         );
@@ -37,12 +43,12 @@ export const createTeleport = function (component, props = {}) {
      * @param portal The destination of teleporting.
      * @param force Force teleporting.
      */
-    const teleport = (portal = null, force = false) => {
-        if(!target || force) changeTo(portal);
+    teleport(portal = null, force = false) {
+        if(!this.target || force) this.changeTo(portal);
 
-        notify(true);
-        render(vnode, container);
-        target?.appendChild(container.firstElementChild);
+        this.notify(true);
+        render(this.vnode, this.container);
+        this.target?.appendChild(this.container.firstElementChild!);
     }
 
     /**
@@ -50,12 +56,10 @@ export const createTeleport = function (component, props = {}) {
      *
      * @param timeout
      */
-    const revoke = (timeout = 0) => {
-        notify(false);
+    revoke(timeout = 0) {
+        this.notify(false);
         setTimeout(() => {
-            render(null, container);
+            render(null, this.container);
         }, timeout);
     }
-
-    return { teleport, revoke, changeTo, vnode };
-};
+}

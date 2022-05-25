@@ -1,5 +1,7 @@
 const mix = require('laravel-mix');
 
+const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
+
 /*
  |--------------------------------------------------------------------------
  | Mix Asset Management
@@ -11,7 +13,7 @@ const mix = require('laravel-mix');
  |
  */
 
-mix.js('resources/js/app.js', 'public/js')
+mix.js('resources/js/app.ts', 'public/js')
     .vue()
     .postCss('resources/css/app.css', 'public/css', [
         require('postcss-import'),
@@ -20,6 +22,29 @@ mix.js('resources/js/app.js', 'public/js')
     ])
     .alias({
         '@': 'resources/js',
+    })
+    .webpackConfig({
+        module: {
+            rules: [
+                {
+                    test: /\.ts?$/,
+                    loader: 'ts-loader',
+                    exclude: [
+                        /node_modules/,
+                        /public/
+                    ],
+                    options: {
+                        appendTsSuffixTo: [/\.vue$/]
+                    },
+                },
+            ],
+        },
+        plugins: [
+            //new BundleAnalyzerPlugin(),
+        ],
+        resolve: {
+            extensions: ['*', '.js', '.jsx', '.ts', '.tsx', '.vue'],
+        },
     });
 
 if (mix.inProduction()) {

@@ -13,17 +13,19 @@
                    :post="post"
         />
     </Container>
-    <Spin :async="fetch" />
+    <Spin :trigger="callback" :on="!satisfied" />
 </template>
 
-<script setup>
+<script lang="ts" setup>
 import { ref } from 'vue';
 import { Container } from 'vue3-smooth-dnd';
 import axios from 'axios';
-import Button from '@/Components/Form/Button';
-import Cardboard from '@/Components/Cardboard';
-import PostPanel from '@/Components/Post/PostPanel';
-import Spin from '@/Components/Post/Spin';
+import TimelineRequest from '@/Scripts/Requests/Timeline';
+
+import Button from '@/Components/Form/Button.vue';
+import Cardboard from '@/Components/Cardboard.vue';
+import PostPanel from '@/Components/Post/PostPanel.vue';
+import Spin from '@/Components/Post/Spin.vue';
 
 const props = defineProps({
     authorUuid: {
@@ -34,36 +36,21 @@ const props = defineProps({
         default: false,
     },
 });
-const posts = ref([]);
 
-let offset = 0;
-let latest = 0;
-let useDesc = true;
-const fetch = async () => {
-    let payload = false;
-    let url = 'api/v1/timelines/public?offset=' + offset + '&chunk=' + 5 + '&order=' + (useDesc ? 'desc' : 'asc') + '&latest=' + latest;
-    if (props.authorUuid) url += '&author_uuid=' + props.authorUuid;
+const request = new TimelineRequest(5, true, props.authorUuid);
+const posts = ref<Array<any>>([]);
+const satisfied = ref(false);
 
-    await axios.get(url)
-        .then(response => {
-            const dataset = response.data.posts;
-            payload = dataset.length > 0;
-            if (payload) {
-                latest = response.data.latest;
-                // merge two arrays
-                posts.value.push(...dataset);
-                offset++;
-            }
-        })
-        .catch(error => {
-
-        });
-    return payload;
+const callback = () => {
+    request.fetch().then(res => {
+        posts.value.push(...res.posts);
+        satisfied.value = !res.hasPayload;
+    });
 }
 
 const changeOrder = () => {
     posts.value = [];
-    useDesc = !useDesc;
-    offset = 0;
+    satisfied.value = false;
+    request.changeOrder();
 }
 </script>

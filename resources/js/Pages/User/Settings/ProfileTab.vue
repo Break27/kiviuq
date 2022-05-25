@@ -58,13 +58,13 @@
 <script setup>
 import { ref } from 'vue';
 import { Head } from '@inertiajs/inertia-vue3';
-import Label from '@/Components/Form/Label';
-import Input from '@/Components/Form/Input';
-import TextArea from '@/Components/Form/TextArea';
-import Cardboard from '@/Components/Cardboard';
-import UserBadge from '@/Components/User/UserBadge';
-import Button from '@/Components/Form/Button';
-import UserAvatar from '@/Components/User/UserAvatar';
+import Label from '@/Components/Form/Label.vue';
+import Input from '@/Components/Form/Input.vue';
+import TextArea from '@/Components/Form/TextArea.vue';
+import Cardboard from '@/Components/Cardboard.vue';
+import UserBadge from '@/Components/User/UserBadge.vue';
+import Button from '@/Components/Form/Button.vue';
+import UserAvatar from '@/Components/User/UserAvatar.vue';
 
 const avatar = ref('');
 const banner = ref('');

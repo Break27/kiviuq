@@ -4,7 +4,7 @@
     </div>
 </template>
 
-<script setup>
+<script lang="ts" setup>
 import { ref, onMounted, onBeforeUnmount } from 'vue';
 
 const props = defineProps({
@@ -14,22 +14,22 @@ const props = defineProps({
     }
 });
 
-const portal = ref(null);
+const portal = ref<HTMLTemplateElement|null>(null);
 const visible = ref(false);
 
 function handleEvent(event) {
     visible.value = event.detail.arrival;
-    const classes = document.getElementsByClassName('os-scrollbar-vertical').item(0).classList;
+    const classes = document.getElementsByClassName('os-scrollbar-vertical')?.item(0)?.classList;
     visible.value
-        ? classes.add('hidden')
-        : classes.remove('hidden');
+        ? classes?.add('hidden')
+        : classes?.remove('hidden');
 }
 
 onMounted(() => {
-    portal.value.addEventListener('notify', handleEvent);
+    portal.value!.addEventListener('notify', handleEvent);
 });
 
 onBeforeUnmount(() => {
-    portal.value.removeEventListener('notify', handleEvent)
+    portal.value!.removeEventListener('notify', handleEvent)
 });
 </script>

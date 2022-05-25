@@ -7,7 +7,7 @@
     </div>
 </template>
 
-<script setup>
+<script lang="ts" setup>
 import { Link } from '@inertiajs/inertia-vue3';
 
 const props = defineProps(['href', 'name']);

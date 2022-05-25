@@ -5,7 +5,7 @@
            ref="input">
 </template>
 
-<script setup>
+<script lang="ts" setup>
 import { onMounted, ref } from 'vue';
 
 defineProps({
@@ -28,11 +28,11 @@ defineProps({
 
 defineEmits(['update:modelValue']);
 
-const input = ref(null);
+const input = ref<HTMLTemplateElement|null>(null);
 
 onMounted(() => {
-    if (input.value.hasAttribute('autofocus')) {
-        input.value.focus();
+    if (input.value!.hasAttribute('autofocus')) {
+        input.value!.focus();
     }
 });
 </script>

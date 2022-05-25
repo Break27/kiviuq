@@ -7,9 +7,9 @@
     </common-layout>
 </template>
 
-<script setup>
+<script lang="ts" setup>
 import { Head } from '@inertiajs/inertia-vue3';
 import CommonLayout from '@/Layouts/Common.vue';
-import Timeline from '@/Components/Post/Timeline';
-import Cardboard from "@/Components/Cardboard";
+import Timeline from '@/Components/Post/Timeline.vue';
+import Cardboard from '@/Components/Cardboard.vue';
 </script>

@@ -15,6 +15,6 @@
     </div>
 </template>
 
-<script setup>
+<script lang="ts" setup>
 defineProps(['title', 'titleClass'])
 </script>

@@ -2,7 +2,7 @@
     <textarea :class="[useClass, useBorder, useRing, useText]" :rows="rows" :maxlength="maxLength" :type="type">{{ value }}</textarea>
 </template>
 
-<script setup>
+<script lang="ts" setup>
 defineProps({
     rows: {
         type: String,

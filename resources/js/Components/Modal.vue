@@ -24,24 +24,24 @@
     </template>
 </template>
 
-<script>
+<script lang="ts">
 import { onMounted, onUnmounted, h, ref } from "vue";
-import { createTeleport } from "@/Utils/teleport";
+import { Teleport } from '@/Utils/teleport';
 import Cardboard from '@/Components/Cardboard.vue';
 
-const modal = ref(null);
+const modal = ref<Teleport|null>(null);
 const visible = ref(false);
 
 const show = (portal) => {
     if(! visible.value) {
-        modal.value.teleport(portal);
+        modal.value!.teleport(portal);
         visible.value = true;
     }
 }
 
 const destroy = (timeout) => {
     if(visible.value) {
-        modal.value.revoke(timeout);
+        modal.value!.revoke(timeout);
         visible.value = false;
     }
 }
@@ -54,12 +54,12 @@ export default {
         },
     },
     setup(props) {
-        const root = ref(null);
+        const root = ref<HTMLTemplateElement|null>(null);
         const summoned = ref(false);
 
         onMounted(() => {
-            const vnode = [h('div', {}, root.value.firstChild.__vnode)];
-            modal.value = createTeleport(vnode);
+            const vnode = [h('div', {}, Object.getOwnPropertyDescriptor(root.value!.firstChild!, '__vnode')!.value)];
+            (modal.value as Teleport) = new Teleport(vnode);
 
             if(summoned.value) show(props.summon);
         });

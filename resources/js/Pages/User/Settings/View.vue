@@ -12,24 +12,24 @@
                                 </span>
                                 <TabLink name="Profile"
                                          use-class="py-1.5 px-2 space-x-1.5"
-                                         :href="route('settings.profile')"
-                                         :active="route().current('settings.profile')">
+                                         :href="$route('settings.profile')"
+                                         :active="$route().current('settings.profile')">
                                     <Icon>
                                         <User />
                                     </Icon>
                                 </TabLink>
                                 <TabLink name="Security"
                                          use-class="py-1.5 px-2 space-x-1.5"
-                                         :href="route('settings.security')"
-                                         :active="route().current('settings.security')">
+                                         :href="$route('settings.security')"
+                                         :active="$route().current('settings.security')">
                                     <Icon>
                                         <Key />
                                     </Icon>
                                 </TabLink>
                                 <TabLink name="Email"
                                          use-class="py-1.5 px-2 space-x-1.5"
-                                         :href="route('settings.email')"
-                                         :active="route().current('settings.email')">
+                                         :href="$route('settings.email')"
+                                         :active="$route().current('settings.email')">
                                     <Icon>
                                         <Envelope />
                                     </Icon>
@@ -43,8 +43,8 @@
                                 </span>
                                 <TabLink name="Appearance"
                                          use-class="py-1.5 px-2 space-x-1.5"
-                                         :href="route('settings.appearance')"
-                                         :active="route().current('settings.appearance')">
+                                         :href="$route('settings.appearance')"
+                                         :active="$route().current('settings.appearance')">
                                     <Icon>
                                         <PaintBrush />
                                     </Icon>
@@ -62,13 +62,17 @@
     </common-layout>
 </template>
 
-<script setup>
+<script lang="ts" setup>
 import { Icon } from '@vicons/utils';
-import { User, Key, Envelope, PaintBrush } from '@vicons/fa';
-import CommonLayout from '@/Layouts/Common';
-import Cardboard from '@/Components/Cardboard';
-import UserBadge from '@/Components/User/UserBadge';
-import TabLink from '@/Components/TabLink';
-import ProfileTab from "@/Pages/User/Settings/ProfileTab";
-import SecurityTab from "@/Pages/User/Settings/SecurityTab";
+import User from '@vicons/fa/User';
+import Key from '@vicons/fa/Key';
+import Envelope from '@vicons/fa/Envelope';
+import PaintBrush from '@vicons/fa/PaintBrush';
+
+import CommonLayout from '@/Layouts/Common.vue';
+import Cardboard from '@/Components/Cardboard.vue';
+import UserBadge from '@/Components/User/UserBadge.vue';
+import TabLink from '@/Components/TabLink.vue';
+import ProfileTab from '@/Pages/User/Settings/ProfileTab.vue';
+import SecurityTab from '@/Pages/User/Settings/SecurityTab.vue';
 </script>

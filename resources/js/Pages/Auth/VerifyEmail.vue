@@ -1,22 +1,3 @@
-<script setup>
-import { computed } from 'vue';
-import BreezeButton from '@/Components/Form/Button.vue';
-import AuthLayout from '@/Layouts/Authenication.vue';
-import { Head, Link, useForm } from '@inertiajs/inertia-vue3';
-
-const props = defineProps({
-    status: String,
-});
-
-const form = useForm();
-
-const submit = () => {
-    form.post(route('verification.send'));
-};
-
-const verificationLinkSent = computed(() => props.status === 'verification-link-sent');
-</script>
-
 <template>
     <auth-layout>
         <Head title="Email Verification" />
@@ -35,8 +16,29 @@ const verificationLinkSent = computed(() => props.status === 'verification-link-
                     Resend Verification Email
                 </BreezeButton>
 
-                <Link :href="route('logout')" method="post" as="button" class="underline text-sm text-gray-600 hover:text-gray-900">Log Out</Link>
+                <Link :href="$route('logout')" method="post" as="button" class="underline text-sm text-gray-600 hover:text-gray-900">Log Out</Link>
             </div>
         </form>
     </auth-layout>
 </template>
+
+<script lang="ts" setup>
+import { Head, Link, useForm } from '@inertiajs/inertia-vue3';
+import { computed } from 'vue';
+import route from 'ziggy-js';
+
+import BreezeButton from '@/Components/Form/Button.vue';
+import AuthLayout from '@/Layouts/Authenication.vue';
+
+const props = defineProps({
+    status: String,
+});
+
+const form = useForm({});
+
+const submit = () => {
+    form.post(route('verification.send'));
+}
+
+const verificationLinkSent = computed(() => props.status! == 'verification-link-sent');
+</script>

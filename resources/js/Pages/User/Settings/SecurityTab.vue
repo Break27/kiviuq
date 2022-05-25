@@ -74,18 +74,21 @@
     </form>
 </template>
 
-<script setup>
+<script lang="ts" setup>
 import { Head, usePage } from '@inertiajs/inertia-vue3';
 import { ref } from 'vue';
+
 import { Icon } from '@vicons/utils';
-import { CheckCircleRegular, ExclamationTriangle } from '@vicons/fa';
-import InputWrapper from '@/Components/Form/InputWrapper';
-import Label from '@/Components/Form/Label';
-import Input from '@/Components/Form/Input';
-import Button from "@/Components/Form/Button";
+import CheckCircleRegular from '@vicons/fa/CheckCircleRegular';
+import ExclamationTriangle from '@vicons/fa/ExclamationTriangle';
+
+import InputWrapper from '@/Components/Form/InputWrapper.vue';
+import Label from '@/Components/Form/Label.vue';
+import Input from '@/Components/Form/Input.vue';
+import Button from '@/Components/Form/Button.vue';
 
 const changeable = ref(false);
-const username = ref(usePage().props.value.auth.user.username);
+const username = ref((usePage().props.value.auth as any).user.username);
 
 const change = () => {
     changeable.value = true;

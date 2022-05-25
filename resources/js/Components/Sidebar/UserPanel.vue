@@ -22,7 +22,7 @@
                              use-class="pl-3 pr-2.5"
                              name="logout"
                              method="post"
-                             :href="route('logout')">
+                             :href="$route('logout')">
                         <Icon>
                             <LogOutSharp />
                         </Icon>
@@ -30,7 +30,7 @@
                     <TabLink icon-rear
                              name="settings"
                              use-class="pl-3 pr-3"
-                             :href="route('settings.appearance')">
+                             :href="$route('settings.appearance')">
                         <Icon>
                             <SettingsSharp />
                         </Icon>
@@ -39,14 +39,14 @@
             </div>
         </div>
         <div v-else class="flex justify-between align-items-end gap-x-2 p-4">
-            <Link :href="route('register')" class="w-full">
-                <Button @click="route('register')"
+            <Link :href="$route('register')" class="w-full">
+                <Button @click="$route('register')"
                         use-color=""
                         class="w-full text-gray-800 bg-white border-2 border-gray-800 text-black hover:text-white hover:border-gray-600 hover:bg-gray-600 active:bg-gray-900 active:border-gray-900">
                     <span>Register</span>
                 </Button>
             </Link>
-            <Link :href="route('login')" class="w-full">
+            <Link :href="$route('login')" class="w-full">
                 <Button class="w-full">
                     <span>Log In</span>
                 </Button>
@@ -55,16 +55,19 @@
     </Cardboard>
 </template>
 
-<script setup>
+<script lang="ts" setup>
 import { ref } from 'vue';
 import { Link } from '@inertiajs/inertia-vue3';
+
 import { Icon } from '@vicons/utils';
-import { LogOutSharp, SettingsSharp } from '@vicons/ionicons5';
-import { ChevronDown } from '@vicons/fa';
+import LogOutSharp from '@vicons/ionicons5/LogOutSharp';
+import SettingsSharp from '@vicons/ionicons5/SettingsSharp';
+import ChevronDown from '@vicons/fa/ChevronDown';
+
 import Cardboard from '@/Components/Cardboard.vue';
 import Button from '@/Components/Form/Button.vue';
-import TabLink from "@/Components/TabLink";
-import UserBadge from "@/Components/User/UserBadge";
+import TabLink from '@/Components/TabLink.vue';
+import UserBadge from '@/Components/User/UserBadge.vue';
 
 defineProps({
     isAuth: {

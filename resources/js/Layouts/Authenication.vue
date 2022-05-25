@@ -14,8 +14,8 @@
     </div>
 </template>
 
-<script setup>
+<script lang="ts" setup>
 import { Link } from '@inertiajs/inertia-vue3';
 import BreezeApplicationLogo from '@/Components/ApplicationLogo.vue';
-import Portal from "@/Components/Portal";
+import Portal from '@/Components/Portal.vue';
 </script>

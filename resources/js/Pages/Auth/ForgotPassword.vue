@@ -1,24 +1,3 @@
-<script setup>
-import BreezeButton from '@/Components/Form/Button.vue';
-import AuthLayout from '@/Layouts/Authenication.vue';
-import BreezeInput from '@/Components/Form/Input.vue';
-import BreezeLabel from '@/Components/Form/Label.vue';
-import BreezeValidationErrors from '@/Components/Form/ValidationErrors.vue';
-import { Head, useForm } from '@inertiajs/inertia-vue3';
-
-defineProps({
-    status: String,
-});
-
-const form = useForm({
-    email: '',
-});
-
-const submit = () => {
-    form.post(route('password.email'));
-};
-</script>
-
 <template>
     <auth-layout>
         <Head title="Forgot Password" />
@@ -49,3 +28,26 @@ const submit = () => {
         </form>
     </auth-layout>
 </template>
+
+<script lang="ts" setup>
+import { Head, useForm } from '@inertiajs/inertia-vue3';
+import route from 'ziggy-js';
+
+import BreezeValidationErrors from '@/Components/Form/ValidationErrors.vue';
+import BreezeButton from '@/Components/Form/Button.vue';
+import AuthLayout from '@/Layouts/Authenication.vue';
+import BreezeInput from '@/Components/Form/Input.vue';
+import BreezeLabel from '@/Components/Form/Label.vue';
+
+defineProps({
+    status: String,
+});
+
+const form = useForm({
+    email: '',
+});
+
+const submit = () => {
+    form.post(route('password.email'));
+};
+</script>

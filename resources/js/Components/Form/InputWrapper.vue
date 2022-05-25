@@ -9,38 +9,21 @@
                 <slot />
             </div>
 
-            <div :class="['flex', classObject]">
+            <div :class="['flex', childBasic, focused ? childFocused : childUnfocused]">
                 <slot name="suffix" />
             </div>
         </div>
     </div>
 </template>
 
-<script>
-export default {
-    props: [
-        'childBasic',
-        'childFocused',
-        'childUnfocused',
-    ],
-    setup(props) {
-        return {
-            props,
-        }
-    },
-    data() {
-        return {
-            focused: false,
-        }
-    },
-    computed: {
-        classObject() {
-            return {
-                [this.props.childBasic]: true,
-                [this.props.childFocused]: this.focused,
-                [this.props.childUnfocused]: ! this.focused,
-            }
-        },
-    },
-}
+<script lang="ts" setup>
+import { ref } from 'vue';
+
+defineProps([
+    'childBasic',
+    'childFocused',
+    'childUnfocused',
+]);
+
+const focused = ref(false);
 </script>

@@ -16,7 +16,7 @@
                         <div class="grid grid-cols-2 h-12">
                             <div class="flex flex-col">
                                 <div class="flex space-x-2 items-center">
-                                    <Link :href="route('account.show', {username: post.author.account.username})">
+                                    <Link :href="$route('account.show', {username: post.author.account.username})">
                                         <span class="text-xl font-semibold">
                                             {{ post.author.profile.name }}
                                         </span>
@@ -69,16 +69,20 @@
     </Draggable>
 </template>
 
-<script setup>
+<script lang="ts" setup>
 import { ref } from 'vue';
-import { Icon } from "@vicons/utils";
-import { Bars, Plus, Minus } from '@vicons/fa';
 import { Draggable } from 'vue3-smooth-dnd';
 import { Link } from '@inertiajs/inertia-vue3';
+
+import { Icon } from "@vicons/utils";
+import Bars from '@vicons/fa/Bars';
+import Plus from '@vicons/fa/Plus';
+import Minus from '@vicons/fa/Minus';
+
 import { marked } from 'marked';
 import Cardboard from '@/Components/Cardboard.vue';
 import UserAvatar from '@/Components/User/UserAvatar.vue';
-import Button from '@/Components/Form/Button';
+import Button from '@/Components/Form/Button.vue';
 
 const entered = ref(false);
 const transition = 'transition-colors duration-500 ease-in-out';

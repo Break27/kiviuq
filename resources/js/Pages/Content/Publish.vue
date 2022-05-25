@@ -19,12 +19,13 @@
     </common-layout>
 </template>
 
-<script setup>
+<script lang="ts" setup>
 import { ref } from 'vue';
 import axios from 'axios';
+
 import CommonLayout from '@/Layouts/Common.vue';
-import Cardboard from '@/Components/Cardboard';
-import Button from '@/Components/Form/Button';
+import Cardboard from '@/Components/Cardboard.vue';
+import Button from '@/Components/Form/Button.vue';
 
 const content = ref(null);
 const processing = ref(false);

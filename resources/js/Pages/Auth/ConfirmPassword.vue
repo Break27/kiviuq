@@ -1,22 +1,3 @@
-<script setup>
-import BreezeButton from '@/Components/Form/Button.vue';
-import AuthLayout from '@/Layouts/Authenication.vue';
-import BreezeInput from '@/Components/Form/Input.vue';
-import BreezeLabel from '@/Components/Form/Label.vue';
-import BreezeValidationErrors from '@/Components/Form/ValidationErrors.vue';
-import { Head, useForm } from '@inertiajs/inertia-vue3';
-
-const form = useForm({
-    password: '',
-});
-
-const submit = () => {
-    form.post(route('password.confirm'), {
-        onFinish: () => form.reset(),
-    })
-};
-</script>
-
 <template>
     <auth-layout>
         <Head title="Confirm Password" />
@@ -43,3 +24,24 @@ const submit = () => {
         </form>
     </auth-layout>
 </template>
+
+<script lang="ts" setup>
+import { Head, useForm } from '@inertiajs/inertia-vue3';
+import route from 'ziggy-js';
+
+import BreezeValidationErrors from '@/Components/Form/ValidationErrors.vue';
+import BreezeButton from '@/Components/Form/Button.vue';
+import AuthLayout from '@/Layouts/Authenication.vue';
+import BreezeInput from '@/Components/Form/Input.vue';
+import BreezeLabel from '@/Components/Form/Label.vue';
+
+const form = useForm({
+    password: '',
+});
+
+const submit = () => {
+    form.post(route('password.confirm'), {
+        onFinish: () => form.reset(),
+    })
+};
+</script>

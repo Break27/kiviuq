@@ -1,7 +1,7 @@
 <template>
     <div ref="target" class="flex">
         <div class="flex flex-1 pt-1 h-10 justify-center items-start">
-            <div v-if="visible && payload">
+            <div v-if="visible && on">
                 <Icon>
                     <CircleNotch class="animate-spin" />
                 </Icon>
@@ -13,32 +13,36 @@
     </div>
 </template>
 
-<script setup>
-import { Icon } from '@vicons/utils';
-import { CircleNotch } from '@vicons/fa';
-import { ref, onMounted, onUnmounted } from 'vue';
+<script lang="ts" setup>
+import { ref, onMounted } from 'vue';
 import { useIntersectionObserver } from '@vueuse/core';
 
+import { Icon } from '@vicons/utils';
+import CircleNotch from '@vicons/fa/CircleNotch';
+
 const props = defineProps({
-    async: {
+    trigger: {
         type: Function,
         required: true,
     },
+    on: {
+        type: Boolean,
+        default: false,
+    }
 });
 
 const target = ref(null);
 const visible = ref(false);
-const payload = ref(true);
 
 onMounted(() => {
-    props.async.call();
+    props.trigger.call(this);
+
     // detect if the component is visible
     useIntersectionObserver(target, ([{isIntersecting}]) => {
         visible.value = isIntersecting;
-        if(isIntersecting)
-            props.async.call().then(resolve => {
-                payload.value = resolve;
-            });
+        if(isIntersecting && props.on) {
+            props.trigger.call(this);
+        }
     });
 });
 </script>

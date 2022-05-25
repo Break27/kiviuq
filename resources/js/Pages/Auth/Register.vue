@@ -42,7 +42,7 @@
                 <BreezeInput id="password_confirmation" type="password" class="mt-1 block w-full" v-model="form.password_confirmation" required autocomplete="new-password" />
             </div>
             <div class="flex items-center justify-end mt-4">
-                <Link :href="route('login')" class="underline text-sm text-gray-600 hover:text-gray-900">
+                <Link :href="$route('login')" class="underline text-sm text-gray-600 hover:text-gray-900">
                     Already registered?
                 </Link>
                 <BreezeButton :class="{ 'opacity-25': form.processing }"
@@ -78,7 +78,9 @@
                 <div v-else>
                     <div class="flex-col w-64">
                         <span class="flex justify-center text-green-600">
-                            <CheckmarkCircleSharp class="inline-block w-32" />
+                            <Icon size="128">
+                                <CheckmarkCircleSharp class="inline-block" />
+                            </Icon>
                         </span>
                         <div class="flex justify-center">
                             <span class="text-xl text-gray-800 text-center">Complete!</span>
@@ -103,16 +105,20 @@
     </Modal>
 </template>
 
-<script setup>
+<script lang="ts" setup>
 import { ref } from 'vue';
 import { Head, Link, useForm } from '@inertiajs/inertia-vue3';
-import { CheckmarkCircleSharp } from "@vicons/ionicons5";
-import InputWrapper from '@/Components/Form/InputWrapper.vue';
+import route from 'ziggy-js';
+
+import { Icon } from '@vicons/utils';
+import CheckmarkCircleSharp from "@vicons/ionicons5/CheckmarkCircleSharp";
+
 import BreezeButton from '@/Components/Form/Button.vue';
 import AuthLayout from '@/Layouts/Authenication.vue';
 import BreezeInput from '@/Components/Form/Input.vue';
 import BreezeLabel from '@/Components/Form/Label.vue';
 import ValidationErrors from '@/Components/Form/ValidationErrors.vue';
+import InputWrapper from '@/Components/Form/InputWrapper.vue';
 import Modal from '@/Components/Modal.vue';
 
 const form = useForm({

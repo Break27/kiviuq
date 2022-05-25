@@ -27,7 +27,7 @@
             </div>
 
             <div class="flex items-center justify-end mt-4">
-                <Link v-if="canResetPassword" :href="route('password.request')" class="underline text-sm text-gray-600 hover:text-gray-900">
+                <Link v-if="canResetPassword" :href="$route('password.request')" class="underline text-sm text-gray-600 hover:text-gray-900">
                     Forgot your password?
                 </Link>
 
@@ -39,18 +39,19 @@
     </auth-layout>
 </template>
 
-<script setup>
-import ValidationErrors from '@/Components/Form/ValidationErrors.vue';
+<script lang="ts" setup>
 import { Head, Link } from '@inertiajs/inertia-vue3';
 import { Inertia } from "@inertiajs/inertia";
 import { ref } from 'vue';
 import axios from 'axios';
+import route from 'ziggy-js';
+
+import ValidationErrors from '@/Components/Form/ValidationErrors.vue';
 import BreezeButton from '@/Components/Form/Button.vue';
 import BreezeCheckbox from '@/Components/Form/Checkbox.vue';
 import AuthLayout from '@/Layouts/Authenication.vue';
 import BreezeInput from '@/Components/Form/Input.vue';
 import BreezeLabel from '@/Components/Form/Label.vue';
-
 
 defineProps({
     canResetPassword: Boolean,
@@ -87,5 +88,5 @@ const submit = () => {
             form.value.processing = false;
         });
     });
-};
+}
 </script>

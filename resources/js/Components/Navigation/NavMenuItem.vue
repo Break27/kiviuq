@@ -1,7 +1,7 @@
 <template>
     <div :class="{'flex' : !noFlex}">
         <slot>
-            <Button :class="classObject"
+            <Button :class="['w-7 h-7', focused ? 'bg-gray-200 shadow-sm' : 'shadow-md']"
                     @focus="focused = true"
                     @blur="focused = false"
                     use-padding=""
@@ -12,32 +12,16 @@
     </div>
 </template>
 
-<script>
+<script lang="ts" setup>
+import { ref } from 'vue';
 import Button from '@/Components/Form/Button.vue';
 
-export default {
-    props: {
-        noFlex: {
-            type: Boolean,
-            default: false,
-        },
-    },
-    data() {
-        return {
-            focused: false,
-        }
-    },
-    computed: {
-        classObject() {
-            return {
-                'w-7 h-7': true,
-                'shadow-md': !this.focused,
-                'bg-gray-200 shadow-sm': this.focused,
-            }
-        }
-    },
-    components: {
-        Button,
+defineProps({
+    noFlex: {
+        type: Boolean,
+        default: false,
     }
-}
+})
+
+const focused = ref(false);
 </script>

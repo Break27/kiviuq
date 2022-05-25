@@ -17,8 +17,9 @@
     </common-layout>
 </template>
 
-<script setup>
+<script lang="ts" setup>
 import { Head } from '@inertiajs/inertia-vue3';
 import CommonLayout from '@/Layouts/Common.vue';
-import Cardboard from "@/Components/Cardboard";
+import Cardboard from '@/Components/Cardboard.vue';
+import { inject } from "vue";
 </script>

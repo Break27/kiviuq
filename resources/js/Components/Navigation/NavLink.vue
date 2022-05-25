@@ -5,7 +5,7 @@
     </Link>
 </template>
 
-<script setup>
+<script lang="ts" setup>
 import { computed } from 'vue';
 import { Link } from '@inertiajs/inertia-vue3';
 

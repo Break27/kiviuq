@@ -1,30 +1,3 @@
-<script setup>
-import BreezeButton from '@/Components/Form/Button.vue';
-import AuthLayout from '@/Layouts/Authenication.vue';
-import BreezeInput from '@/Components/Form/Input.vue';
-import BreezeLabel from '@/Components/Form/Label.vue';
-import BreezeValidationErrors from '@/Components/Form/ValidationErrors.vue';
-import { Head, useForm } from '@inertiajs/inertia-vue3';
-
-const props = defineProps({
-    email: String,
-    token: String,
-});
-
-const form = useForm({
-    token: props.token,
-    email: props.email,
-    password: '',
-    password_confirmation: '',
-});
-
-const submit = () => {
-    form.post(route('password.update'), {
-        onFinish: () => form.reset('password', 'password_confirmation'),
-    });
-};
-</script>
-
 <template>
     <auth-layout>
         <Head title="Reset Password" />
@@ -57,3 +30,32 @@ const submit = () => {
         </form>
     </auth-layout>
 </template>
+
+<script lang="ts" setup>
+import { Head, useForm } from '@inertiajs/inertia-vue3';
+import route from 'ziggy-js';
+
+import BreezeValidationErrors from '@/Components/Form/ValidationErrors.vue';
+import BreezeButton from '@/Components/Form/Button.vue';
+import AuthLayout from '@/Layouts/Authenication.vue';
+import BreezeInput from '@/Components/Form/Input.vue';
+import BreezeLabel from '@/Components/Form/Label.vue';
+
+const props = defineProps({
+    email: String,
+    token: String,
+});
+
+const form = useForm({
+    token: props.token,
+    email: props.email,
+    password: '',
+    password_confirmation: '',
+});
+
+const submit = () => {
+    form.post(route('password.update'), {
+        onFinish: () => form.reset('password', 'password_confirmation'),
+    });
+};
+</script>

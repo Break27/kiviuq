@@ -27,7 +27,7 @@ class TimelineController extends Controller
         $data = PostService::getTimeline(
             $request->offset ?: 0,
             $request->chunk ?: 10,
-            $request->order == 'desc',
+            $request->desc == 'true',
             $request->latest ?: false,
             $request->author_uuid ?: false,
         );

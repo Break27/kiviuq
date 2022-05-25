@@ -25,7 +25,7 @@
                                 </div>
                                 <div class="flex justify-end items-center gap-x-2">
                                     <!-- todo - follow feature -->
-                                    <Link :href="isOwner ? route('settings.profile') : '.'">
+                                    <Link :href="isOwner ? $route('settings.profile') : '.'">
                                         <Button use-padding="p-2">
                                             <div v-if="isOwner" class="flex">
                                                 <Icon size="16"><PencilAlt /></Icon>
@@ -48,23 +48,23 @@
                             </div>
                         </div>
                         <div class="px-6 h-10 flex justify-items-end bg-white space-x-3">
-                            <NavLink :href="route('account.show', account.username)"
-                                     :active="route().current('account.show')"
+                            <NavLink :href="$route('account.show', account.username)"
+                                     :active="$route().current('account.show')"
                                      preserve-scroll>
                                 <NavLinkText>posts</NavLinkText>
                             </NavLink>
-                            <NavLink :href="route('account.media', account.username)"
-                                     :active="route().current('account.media')"
+                            <NavLink :href="$route('account.media', account.username)"
+                                     :active="$route().current('account.media')"
                                      preserve-scroll>
                                 <NavLinkText>media</NavLinkText>
                             </NavLink>
-                            <NavLink :href="route('account.zone', account.username)"
-                                     :active="route().current('account.zone')"
+                            <NavLink :href="$route('account.zone', account.username)"
+                                     :active="$route().current('account.zone')"
                                      preserve-scroll>
                                 <NavLinkText>zone</NavLinkText>
                             </NavLink>
-                            <NavLink :href="route('account.friends', account.username)"
-                                     :active="route().current('account.friends')"
+                            <NavLink :href="$route('account.friends', account.username)"
+                                     :active="$route().current('account.friends')"
                                      preserve-scroll>
                                 <NavLinkText>friends</NavLinkText>
                             </NavLink>
@@ -108,23 +108,26 @@
     </common-layout>
 </template>
 
-<script setup>
+<script lang="ts" setup>
 import { computed, defineComponent } from 'vue';
 import { Head, Link, usePage } from '@inertiajs/inertia-vue3';
+
 import { Icon } from '@vicons/utils';
-import { PersonAdd, EllipsisVertical } from '@vicons/ionicons5';
-import { PencilAlt } from "@vicons/fa";
+import PersonAdd from '@vicons/ionicons5/PersonAdd';
+import EllipsisVertical from '@vicons/ionicons5/EllipsisVertical';
+import PencilAlt from '@vicons/fa/PencilAlt';
+
 import CommonLayout from '@/Layouts/Common.vue';
 import Cardboard from '@/Components/Cardboard.vue';
 import UserAvatar from '@/Components/User/UserAvatar.vue';
 import Button from '@/Components/Form/Button.vue';
-import NavLink from '@/Components/Navigation/NavLink';
-import Timeline from '@/Components/Post/Timeline';
+import NavLink from '@/Components/Navigation/NavLink.vue';
+import Timeline from '@/Components/Post/Timeline.vue';
 
-const target = computed(() => usePage().props.value.target);
+const target = computed<any>(() => usePage().props.value.target);
 const account = target.value.account;
 const isOwner = target.value.isOwner;
-const fullname = account.username + '@' + usePage().props.value.app.domain;
+const fullname = account.username + '@' + (usePage().props.value.app as any).domain;
 
 const NavLinkText = defineComponent({
     template: `
